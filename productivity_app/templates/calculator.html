@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Calculator</h1>
+        <form method="POST">
+            <input type="text" name="calc" placeholder="Enter calculation" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div class="result">
+            {% if result %}
+                <p>Result: {{ result }}</p>
+            {% endif %}
+        </div>
+        <button onclick="location.href='/'" class="redirect-btn">Back to Home</button>
+    </div>
+</body>
+</html>
+

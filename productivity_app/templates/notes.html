@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Collaborative Note Taking</h1>
+        <form method="POST">
+            <textarea name="note" placeholder="Write your note here..." rows="4" required></textarea>
+            <button type="submit">Save Note</button>
+        </form>
+        <div class="notes-list">
+            <ul>
+                {% for note in notes %}
+                    <li>{{ note }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <button onclick="location.href='/'" class="redirect-btn">Back to Home</button>
+    </div>
+</body>
+</html>
+

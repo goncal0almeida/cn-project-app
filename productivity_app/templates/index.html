@@ -12,32 +12,12 @@
 
         <!-- Calculator Section -->
         <div class="section">
-            <h2>Calculator</h2>
-            <form method="POST">
-                <input type="text" name="calc" placeholder="Enter calculation" value="{{ request.form['calc'] if request.form['calc'] else '' }}" required>
-                <button type="submit">Calculate</button>
-            </form>
-            <div class="result">
-                {% if result %}
-                    <p>Result: {{ result }}</p>
-                {% endif %}
-            </div>
+          <button onclick="location.href='/calculator'" class="redirect-btn">Go to Calculator</button>
         </div>
 
         <!-- Notes Section -->
         <div class="section">
-            <h2>Note Taking</h2>
-            <form method="POST">
-                <textarea name="note" placeholder="Write your note here..." rows="4" required></textarea>
-                <button type="submit">Save Note</button>
-            </form>
-            <div class="notes-list">
-                <ul>
-                    {% for note in notes %}
-                        <li>{{ note }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+          <button onclick="location.href='/notes'" class="redirect-btn">Go to your Notes</button>
         </div>
     </div>
 </body>
