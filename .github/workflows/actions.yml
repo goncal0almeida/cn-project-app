@@ -22,7 +22,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Build the Docker image"
-        run: "docker build /productivity_app --t goncal0almeida/cn-post-1"
+        run: "docker build /productivity_app -t goncal0almeida/cn-post-1"
 
       - name: "Push the Image to Docker Hub"
         run: "docker push goncal0almeida/cn-post-1"
