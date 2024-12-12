@@ -1,0 +1,51 @@
+name: "Application CI/CD"
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  ci:
+    name: "Continuous Integration"
+    runs-on: "ubuntu-latest"
+    env:
+      TF_VAR_dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      TF_VAR_dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Build the Docker image"
+        run: "docker build /productivity_app --t goncal0almeida/cn-post-1"
+
+      - name: "Push the Image to Docker Hub"
+        run: "docker push goncal0almeida/cn-post-1"
+
+  cd:
+    name: "Continuous Deployment"
+    needs: ci
+    runs-on: "ubuntu-latest"
+
+    steps:
+      # Authenticate to GCP using Workload Identity Federation
+      - name: "Auth in GCP"
+        id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
+          service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_APP_SA_EMAIL }}
+          create_credentials_file: true
+
+      - name: 'Deploy to a new revision on Cloud Run'
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          service: 'test-service'
+          image: 'europe-west3-docker.pkg.dev/empirical-oven-209411/dockerhub-remote-repo/goncal0almeida/cn-post-1:latest'
+
