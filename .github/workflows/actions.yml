@@ -43,7 +43,7 @@ jobs:
         with:
           token_format: "access_token"
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
-          service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_APP_SA_EMAIL }}
+          service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
           create_credentials_file: true
 
       - name: 'Deploy to a new revision on Cloud Run'
