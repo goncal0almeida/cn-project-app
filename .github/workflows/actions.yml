@@ -25,10 +25,10 @@ jobs:
           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
       - name: "Build the Docker image"
-        run: "docker build productivity_app -t goncal0almeida/cn-post-1"
+        run: "docker build productivity_app -t ${{ secrets.DOCKERHUB_USERNAME }}/cn-post-1"
 
       - name: "Push the Image to Docker Hub"
-        run: "docker push goncal0almeida/cn-post-1"
+        run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/cn-post-1"
 
   cd:
     name: "Continuous Deployment"
@@ -42,13 +42,14 @@ jobs:
         uses: "google-github-actions/auth@v1"
         with:
           token_format: "access_token"
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
-          service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
+          workload_identity_provider: "${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}"
+          service_account: "${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}"
           create_credentials_file: true
 
-      - name: 'Deploy to a new revision on Cloud Run'
-        uses: 'google-github-actions/deploy-cloudrun@v2'
+      - name: "Deploy to a new revision on Cloud Run"
+        uses: "google-github-actions/deploy-cloudrun@v2"
         with:
-          service: 'test-service'
-          image: 'europe-west3-docker.pkg.dev/empirical-oven-209411/dockerhub-remote-repo/goncal0almeida/cn-post-1:latest'
+          service: "${{ env.SERVICE_ID }}"
+          region: "${{ env.SERVICE_REGION }}"
+          image: "${{ env.SERVICE_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/dockerhub-remote-repo/${{ secrets.DOCKERHUB_USERNAME }}/cn-post-1:latest'
 
